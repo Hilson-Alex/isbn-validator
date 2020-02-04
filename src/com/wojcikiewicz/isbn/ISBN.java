@@ -1,26 +1,33 @@
-package br.univali.kob.poo.lib;
+package com.wojcikiewicz.isbn;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * A Class to handle and validate ISBN that Works both to ISBN 10
+ * and ISBN 13. Also, it don't requires a pre-formatted input.
+ * the code only sees the numeral part (and a x final).
+ *
+ * @author Hilson Alexandre Wojcikiewicz Junior
+ */
 public class ISBN implements Serializable {
 
-    private final String value;
+    /**
+     * Private constructor.
+     */
+    private ISBN (){}
 
-    public ISBN (String value){
-        validISBN(value);
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public String getNumeric(){
-        return numericIsbn(value);
-    }
-
-    private String numericIsbn (String isbn){
+    /**
+     * Filter the number part of the input (ignores '.', '/', ' '
+     * and any other symbol or letter).
+     *
+     * Obs: 'x' can be taken as a "number" in the ISBN-13 if it is
+     * the final digit. The code also considers it.
+     *
+     * @param isbn a string ISBN to be filtered.
+     * @return a String with just the numbers (and x in some cases).
+     */
+    public static String toNumeric (String isbn){
         String numeric = "";
         for (char ch : isbn.toCharArray()){
             if (Character.isDigit(ch)){
@@ -31,27 +38,51 @@ public class ISBN implements Serializable {
         return numeric;
     }
 
-    private void validISBN (String isbn){
-        if(!validNumericISBN(isbn)){
+    /**
+     * Throw an error if the ISBN is not valid.
+     *
+     * @param isbn the ISBN to be verified. (don't need to be formatted).
+     */
+    public static void validate(String isbn){
+        if(!isValid(isbn)){
             throw new IllegalArgumentException("NOT A VALID isbn");
         }
     }
 
-    private boolean validNumericISBN (String isbn){
-        String numeric = numericIsbn(isbn);
+    /**
+     * Verifies if an isbn is valid.
+     *
+     * @param isbn the ISBN to be verified. (don't need to be formatted).
+     * @return True if it's a valid ISBN
+     */
+    public static boolean isValid (String isbn){
+        String numeric = toNumeric(isbn);
         if(numeric.length() != 10 && numeric.length() != 13){
             return false;
         }
-        if(!validCheckDigit(isbn)){
-            return false;
-        }
-        return true;
+        return validCheckDigit(isbn);
     }
 
-    private boolean validCheckDigit (String isbn){
+    /**
+     * Verifies the ISBN check digit.
+     * @param isbn the ISBN to be verified
+     * @return true if the check digit is valid
+     */
+    private static boolean validCheckDigit (String isbn){
+        isbn = toNumeric(isbn);
+        int calcDigit = calculateDigit(isbn);
+        char lastDigit = isbn.charAt(isbn.length()-1);
+        return (calcDigit == 10) ? lastDigit == 'x' : calcDigit == Character.getNumericValue(lastDigit);
+    }
+
+    /**
+     * calculate the check digit.
+     * @param isbn the ISBN to calculate.
+     * @return the expected check digit.
+     */
+    private static int calculateDigit (String isbn){
         int[] numbers = new int[12];
         int calcDigit = 0;
-        char lastDigit = isbn.charAt(isbn.length()-1);
         for (int i = 0; i < isbn.length()-1; i++){
             numbers[i] = Character.getNumericValue(isbn.charAt(i));
         }
@@ -66,24 +97,6 @@ public class ISBN implements Serializable {
             }
             calcDigit = 10 - (calcDigit % 10);
         }
-        return (calcDigit == 10) ? lastDigit == 'x' : calcDigit == Character.getNumericValue(lastDigit);
-    }
-
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ISBN isbn = (ISBN) o;
-        return Objects.equals(getNumeric(), isbn.getNumeric());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getNumeric());
+        return calcDigit;
     }
 }
