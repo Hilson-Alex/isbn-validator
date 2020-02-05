@@ -21,7 +21,7 @@ public class ISBN implements Serializable {
      * Filter the number part of the input (ignores '.', '/', ' '
      * and any other symbol or letter).
      *
-     * Obs: 'x' can be taken as a "number" in the ISBN-13 if it is
+     * Obs: 'x' can be taken as a "number" in the ISBN-10 if it is
      * the final digit. The code also considers it.
      *
      * @param isbn a string ISBN to be filtered.
@@ -34,7 +34,7 @@ public class ISBN implements Serializable {
                 numeric = numeric + ch;
             }
         }
-        numeric = (isbn.charAt(isbn.length()-1) == 'x') ? numeric + "x" : numeric;
+        numeric = (Character.toUpperCase(isbn.charAt(isbn.length()-1)) == 'X') ? numeric + "X" : numeric;
         return numeric;
     }
 
@@ -43,9 +43,9 @@ public class ISBN implements Serializable {
      *
      * @param isbn the ISBN to be verified. (don't need to be formatted).
      */
-    public static void validate(String isbn){
+    public static void validate(String isbn, String message){
         if(!isValid(isbn)){
-            throw new IllegalArgumentException("NOT A VALID isbn");
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -72,7 +72,7 @@ public class ISBN implements Serializable {
         isbn = toNumeric(isbn);
         int calcDigit = calculateDigit(isbn);
         char lastDigit = isbn.charAt(isbn.length()-1);
-        return (calcDigit == 10) ? lastDigit == 'x' : calcDigit == Character.getNumericValue(lastDigit);
+        return (calcDigit == 10) ? lastDigit == 'X' : calcDigit == Character.getNumericValue(lastDigit);
     }
 
     /**
