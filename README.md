@@ -9,7 +9,7 @@ As a static class, the only thing you need to run is importing it. ISBN does not
 
 ### Installing
 
-To use it you can [download the Jar](/out/artifacts/isbn_jar/isbn.jar) And include as an library in your project or [copy the class](/src/com/wojcikiewicz/isbn/ISBN.java).
+To use it you can [download the Jar](/out/artifacts/isbn_jar/isbn.jar) and include as an library in your project or [copy the class](/src/com/wojcikiewicz/isbn/ISBN.java).
 
 Note that ISBN class have a private constructor, so you can't instantiate it. All methods are static, so:
 
