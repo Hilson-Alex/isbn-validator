@@ -93,4 +93,4 @@ public void testValidatePasser (){
 Check the **ISBN.*validate*(isbn)** that throws an error when an invalid ISBN is passed. The first test verifies if the two wrong ISBNs are trowing the desired error, and the second one if the correct ISBN are passing.
 
 ## Author
-This validator was developed by [@Wojcikiewicz](https://github.com/Wojcikiewicz).
+This validator was developed by [@Hilson-Alex](https://github.com/Hilson-Alex).
