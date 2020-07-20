@@ -14,15 +14,15 @@ To use it you can [download the Jar](/out/artifacts/isbn_jar/isbn.jar) and inclu
 Note that ISBN class have a private constructor, so you can't instantiate it. All methods are static, so:
 
 > **Use like this:**
-> ```
+> ```java
 > ISBN.isValid(isbnCode);
 > ```
 > **Not like this:**
-> ```
+> ```java
 > new ISBN().isValid(isbnCode);
 > ```
 > **Nor like this:**
-> ```
+> ```Java
 > ISBN isbnValidator = new ISBN();
 > isbnValidator.isValid(isbnCode);
 > ```
@@ -35,7 +35,7 @@ Cloning the project, you can run the tests running the [test file](/Test/com/woj
 ----
 
 The first test:
-```
+```java
 @Test
 public void testTheISBNFilter (){
     String[] isbnTest = {"978-85.945 4033a1", "85-220-0523-0", "0-8044-2957-x"};
@@ -50,7 +50,7 @@ Check if the public method **ISBN.*toNumeric*(isbn)** is filtering all invalid c
 ----
 
 Next, we have: 
-```
+```java
 @Test
 public void testIfISBNValidationIsWorking (){
     String[] isbnTest = {"978-85.945 4033a1", "123456789 0123", "85-220-0523-0", "0-8044-2957-x",
@@ -66,7 +66,7 @@ That checks if the public method **ISBN.*isValid*(isbn)** is returning the right
 ----
 
 The last two tests:
-```
+```java
 @Test
 public void testValidateError (){
     ThrowingRunnable[] throwers = {
@@ -94,3 +94,7 @@ Check the **ISBN.*validate*(isbn)** that throws an error when an invalid ISBN is
 
 ## Author
 This validator was developed by [@Hilson-Alex](https://github.com/Hilson-Alex).
+
+## License
+
+The project is under [MIT](/LICENSE) license
